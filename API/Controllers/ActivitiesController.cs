@@ -1,6 +1,7 @@
+using Application.Activities.Queries;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace API.Controllers
@@ -9,7 +10,7 @@ namespace API.Controllers
     /// Controller for handling activity-related endpoints.
     /// </summary>
     /// <param name="context"></param>
-    public class ActivitiesController(AppDbContext context) : BaseApiController
+    public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseApiController
     {
         #region Properties
         private readonly AppDbContext context = context;
@@ -23,7 +24,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {
-            return await context.Activities.ToListAsync();
+            return await mediator.Send(new GetActivityList.Query());
         }
 
         /// <summary>
