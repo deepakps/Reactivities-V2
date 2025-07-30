@@ -2,7 +2,6 @@ using Application.Activities.Queries;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Persistence;
 
 namespace API.Controllers
 {
@@ -10,10 +9,9 @@ namespace API.Controllers
     /// Controller for handling activity-related endpoints.
     /// </summary>
     /// <param name="context"></param>
-    public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseApiController
+    public class ActivitiesController(IMediator mediator) : BaseApiController
     {
         #region Properties
-        private readonly AppDbContext context = context;
         #endregion
 
         #region Endpoints
@@ -35,11 +33,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivityDetail(string id)
         {
-            var activity = await context.Activities.FindAsync(id);
-
-            if(activity == null) return NotFound();
-
-            return activity;
+            return await mediator.Send(new GetActivityDetails.Query { Id = id });
         }
         #endregion
     }
