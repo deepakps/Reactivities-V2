@@ -48,12 +48,30 @@ namespace API.Controllers
             return await Mediator.Send(new CreateActivity.Command { Activity = activity });
         }
 
+        /// <summary>
+        /// Updates an activity with new details.
+        /// </summary>
+        /// <param name="activity">Updated activity data.</param>
+        /// <returns>204 NoContent on success.</returns>
         [HttpPut]
         public async Task<ActionResult> EditActivity(Activity activity)
         {
             await Mediator.Send(new EditActivity.Command { Activity = activity });
-            
+
             return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes an activity by ID.
+        /// </summary>
+        /// <param name="id">ID of the activity to delete.</param>
+        /// <returns>204 NoContent on success.</returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteActivity(string id)
+        {
+            await Mediator.Send(new DeleteActivity.Command { Id = id });
+
+            return Ok();
         }
         #endregion
     }
