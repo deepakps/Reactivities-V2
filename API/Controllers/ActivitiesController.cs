@@ -1,3 +1,4 @@
+using Application.Activities.Commands;
 using Application.Activities.Queries;
 using Domain;
 using MediatR;
@@ -9,7 +10,7 @@ namespace API.Controllers
     /// Controller for handling activity-related endpoints.
     /// </summary>
     /// <param name="context"></param>
-    public class ActivitiesController(IMediator mediator) : BaseApiController
+    public class ActivitiesController : BaseApiController
     {
         #region Properties
         #endregion
@@ -22,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {
-            return await mediator.Send(new GetActivityList.Query());
+            return await Mediator.Send(new GetActivityList.Query());
         }
 
         /// <summary>
@@ -33,7 +34,18 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivityDetail(string id)
         {
-            return await mediator.Send(new GetActivityDetails.Query { Id = id });
+            return await Mediator.Send(new GetActivityDetails.Query { Id = id });
+        }
+
+        /// <summary>
+        /// Creates a new activity.
+        /// </summary>
+        /// <param name="activity">The activity object to be created.</param>
+        /// <returns>The ID of the newly created activity.</returns>
+        [HttpPost]
+        public async Task<ActionResult<string>> CreateActivity(Activity activity)
+        {
+            return await Mediator.Send(new CreateActivity.Command { Activity = activity });
         }
         #endregion
     }
