@@ -1,9 +1,9 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import { CssBaseline, List, ListItem, ListItemText } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react"
+import NavBar from "./NavBar";
 
 function App() {
-  const title = 'Welcome to Reactivities!'
   const [activities, setActivities] = useState<Activity[]>([]);
 
   useEffect(() => {
@@ -16,7 +16,8 @@ function App() {
 
   return (
     <>
-      <Typography variant="h2" className="app" style={{color: "purple"}}>{title}</Typography>
+    <CssBaseline />
+      <NavBar />
       <List>
         {activities.map((activity) => (
           <ListItem key={activity.id}>
